@@ -1,6 +1,6 @@
 # Project Title : Space Ranger
 ### Batch NO : 10
-### Mentor Name :
+### Mentor Name :Prof.Nandhakumar 
 ### Github Link : https://github.com/Timothy025
 ### Team Details :
 | S.no  | Name  | Roll Number  | Email Id  |
