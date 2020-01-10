@@ -1,6 +1,7 @@
 from __future__ import division
 import pygame
 import random
+import sys
 from os import path
 img_dir = path.join(path.dirname(__file__), 'assets')
 sound_folder = path.join(path.dirname(__file__), 'sounds')
@@ -19,10 +20,11 @@ YELLOW = (255, 255, 0)
 pygame.init()
 pygame.mixer.init()  ## For sound
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Space Shooter")
+pygame.display.set_caption("Space Ranger")
 clock = pygame.time.Clock()     ## For syncing the FPS
 font_name = pygame.font.match_font('arial')
 def main_menu():
+    gameover = False
     global screen
     menu_song = pygame.mixer.music.load(path.join(sound_folder, "menu.ogg"))
     pygame.mixer.music.play(-1)
@@ -93,7 +95,7 @@ class Explosion(pygame.sprite.Sprite):
             self.last_update = now
             self.frame += 1
             if self.frame == len(explosion_anim[self.size]):
-                self.kill()
+               self.kill()
             else:
                 center = self.rect.center
                 self.image = explosion_anim[self.size][self.frame]
@@ -219,7 +221,7 @@ class Pow(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += self.speedy
         if self.rect.top > HEIGHT:
-            self.kill()
+           self.kill()
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -253,6 +255,8 @@ player_mini_img = pygame.transform.scale(player_img, (25, 19))
 player_mini_img.set_colorkey(BLACK)
 bullet_img = pygame.image.load(path.join(img_dir, 'laserRed16.png')).convert()
 missile_img = pygame.image.load(path.join(img_dir, 'missile.png')).convert_alpha()
+gameove = pygame.image.load(path.join(img_dir, 'gameover.png')).convert_alpha()
+gameove_rect = gameove.get_rect()
 meteor_images = []
 meteor_list = [
     'meteorBrown_big1.png',
@@ -351,7 +355,10 @@ while running:
         if hit.type == 'gun':
             player.powerup()
     if player.lives == 0 and not death_explosion.alive():
-        running = False
+        import gameover
+        sys.exit()
+        screen.withdraw()
+        
     screen.fill(BLACK)
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
